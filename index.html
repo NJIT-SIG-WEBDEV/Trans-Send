@@ -1,15 +1,18 @@
 <!doctype html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransSend</title>
+    <script type="text/javascript">
+    function scrollToBottom() {
+    $('html, body').animate({scrollTop:$(document).height()}, 'slow');
+    function scrollToTop() {
+    $('html, body').animate({scrollTop:0}, 'slow');
+    }
+    </script>
     <style>
 
-      * {
-          margin:0;
-          padding:0;
-        }
-
-        body {
+      * body{
           background: rgb(242, 242, 240);
           font:13px Helvetica, Arial;
         }
@@ -23,17 +26,46 @@
         }
 
         form input {
-          border:0;
+          border-radius:25px;
           width:87%;
           margin-right:.5%;
           padding:10px;
+          border-style: groove;
+        }
+        .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 16px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;
+        }
+
+        .button1 {
+        background-color: white;
+        color: black;
+        border: 2px solid #4CAF50;
+        }
+
+        .button1:hover {
+        background-color: #4CAF50;
+        color: white;
         }
 
         form button {
           width:9%;
-          background:#82e0ff;
-          border:none;
+          background:#99ccff;
+          border-radius:25px;
           padding:10px;
+          font-family: myFirstFont;
+          src: url(sansation_bold.woff);
+          font-weight: 200;
         }
 
         #chat {
@@ -81,7 +113,7 @@
     <div id="chat">
       <ul id="messages"></ul>
       <form action="">
-        <input id="m" autocomplete="off" /><button>Send</button>
+        <input id="m" autocomplete="off" /><button class='button button1'>Send</button>
       </form>
         </div>
       <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
