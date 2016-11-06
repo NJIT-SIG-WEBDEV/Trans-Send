@@ -14,7 +14,7 @@
           font:13px Helvetica, Arial;
         }
 
-        form {
+        #chat form {
           background:#000;
           position:fixed;
           bottom:0;
@@ -22,14 +22,14 @@
           padding:3px;
         }
 
-        form input {
+        #chat form input {
           border:0;
           width:87%;
           margin-right:.5%;
           padding:10px;
         }
 
-        form button {
+        #chat form button {
           width:9%;
           background:#82e0ff;
           border:none;
@@ -77,6 +77,9 @@
   <body>
     <div id="welcome">
       <h1>Hello!</h1>
+      <form action="">
+        <input id="n" autocomplete="off" placeholder="Enter your desired nickname"/><button>Select</button>
+      </form>
     </div>
     <div id="chat">
       <ul id="messages"></ul>
@@ -87,14 +90,22 @@
       <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
       <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
       <script>
-
+        var nickname = '';
+        var yournick = '';
         var socket = io();
-        var nickname = prompt('What nickname do you want to use?');
-        var yournick = nickname;
-        socket.emit('send-nickname', nickname);
-        $('#chat').show();
-        $('#welcome').hide();
-        $('form').submit(function(){
+
+        $('#n').select();
+
+        $('#welcome form').submit(function(e){
+            nickname = $('#n').val();
+            yournick = nickname;
+            socket.emit('send-nickname', nickname);
+            $('#chat').show();
+            $('#m').select();
+            $('#welcome').hide();
+            return false;
+        });
+        $('#chat form').submit(function(){
           socket.emit('chat message', nickname, $('#m').val());
           $('#m').val('');
           return false;
