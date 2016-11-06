@@ -107,7 +107,7 @@
             socket.emit('send-nickname', nickname);
             $('#chat').show();
             $('#m').select();
-            $('#welcome').hide();
+            $('#welcome').hide(1000);
             return false;
         });
         $('#chat form').submit(function(){
