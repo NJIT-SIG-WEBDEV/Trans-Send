@@ -24,8 +24,9 @@
     <script>
       var socket = io();
       var nickname = prompt('What nickname do you want to use?');
+      socket.emit('send-nickname', nickname);
       $('form').submit(function(){
-        socket.emit('chat message', $('#m').val());
+        socket.emit('chat message', nickname, $('#m').val());
         $('#m').val('');
         return false;
       });

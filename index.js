@@ -11,9 +11,15 @@ io.on('connection', function(socket){
   socket.on('disconnect', function(){
     console.log('user disconnected');
   });
-  socket.on('chat message', function(msg){
+
+  socket.on('send-nickname', function(nickname) {
+    socket.nickname = nickname;
+  });
+
+  socket.on('chat message', function(author, msg){
+      console.log(author);
     console.log('message: ' + msg);
-    io.emit('chat message', msg);
+    io.emit('chat message', author + ': ' + msg);
     io.emit('some event', { for: 'everyone' });
   socket.broadcast.emit('hi');
   });
