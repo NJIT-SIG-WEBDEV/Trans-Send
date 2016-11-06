@@ -14,6 +14,12 @@
     </style>
   </head>
   <body>
+    <p style='font-family:verdana','font-size:18'>What is your desired language?</p>
+    <select>
+    <option id='english' value="english">English</option>
+    <option id='british_english'value="british-english">British-English</option>
+    <option id='german' value="german">German</option>
+    </select>
     <ul id="messages"></ul>
     <form action="">
       <input id="m" autocomplete="off" /><button>Send</button>
@@ -29,7 +35,44 @@
         return false;
       });
       socket.on('chat message', function(msg){
-        $('#messages').append($('<li>').text(msg));
+
+          $.ajax({
+            type: 'GET',
+            url: "https://www.googleapis.com/language/translate/v2?q=" + msg + "&target=en&key=AIzaSyDcE9tSELEYm1Mmqj7yCh6lNImSJuGRe7I",
+            success: function(data) {
+                    console.log("Google Returned : ", data.data.translations[0].detectedSourceLanguage);
+
+
+
+                    var language = data.data.translations[0].detectedSourceLanguage;
+                    var translation = data.data.translations[0].translatedText;
+                    console.log("LANGUAGE :", language, "TRANSLATION :", translation);
+
+                      if(language == "en")return;
+
+                      Demonym(language, translation);
+
+
+
+
+            }
+          });
+
+
+          function Demonym (language, translation){
+            console.log("LANGUAGE :", language, "TRANSLATION :", translation);
+            $.ajax({
+                  type: 'GET',
+                  url: "https://restcountries.eu/rest/v1/alpha/" + language,
+                  success: function(data) {
+                    console.log(data);
+                    $('#messages').append($('<li>').text(translation + " Translated from: " + data.demonym));
+                  }
+            });
+
+          }
+
+
       });
     </script>
   </body>
