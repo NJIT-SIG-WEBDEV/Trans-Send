@@ -11,9 +11,15 @@ io.on('connection', function(socket){
   socket.on('disconnect', function(){
     console.log('user disconnected');
   });
-  socket.on('chat message', function(msg){
+
+  socket.on('send-nickname', function(nickname) {
+    socket.nickname = nickname;
+  });
+
+  socket.on('chat message', function(nickname, msg){
+    console.log(nickname);
     console.log('message: ' + msg);
-    io.emit('chat message', msg);
+    io.emit('chat message', nickname, msg);
     socket.broadcast.emit('hi');
   });
 });
@@ -22,3 +28,4 @@ io.on('connection', function(socket){
 http.listen(3000, function(){
   console.log('listening on *:3000');
 });
+

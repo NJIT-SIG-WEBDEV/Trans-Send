@@ -8,60 +8,65 @@
       form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
       form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
       form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #chat { display: none; }
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
     </style>
   </head>
   <body>
+    <div id="welcome">
+      <h1>Hello!</h1>
+    </div>
+    <div id="chat">
+      <ul id="messages"></ul>
+      <form action="">
+        <input id="m" autocomplete="off" /><button>Send</button>
+      </form>
 
+      <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+      <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+      <script>
 
-    <ul id="messages"></ul>
-    <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
-
-
-
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-    <script>
-
-      var socket = io();
-      $('form').submit(function(){
-        socket.emit('chat message', $('#m').val());
-        $('#m').val('');
-        return false;
-      });
-      socket.on('chat message', function(msg){
-
-        $.ajax({
-          type: 'GET',
-          url: "https://www.googleapis.com/language/translate/v2?q=" + msg + "&target=en&key=AIzaSyDcE9tSELEYm1Mmqj7yCh6lNImSJuGRe7I",
-          success: function(data) {
-
-                  var language = data.data.translations[0].detectedSourceLanguage;
-                  var translation = data.data.translations[0].translatedText;
-
-                    if(language == "en"){
-                      $('#messages').append($('<li>').text(translation));
-                    }else{
-                      Demonym(language, translation);
-                    }
-          }
+        var socket = io();
+        var nickname = prompt('What nickname do you want to use?');
+        socket.emit('send-nickname', nickname);
+        $('#chat').show();
+        $('#welcome').hide();
+        $('form').submit(function(){
+          socket.emit('chat message', nickname, $('#m').val());
+          $('#m').val('');
+          return false;
         });
-
-        function Demonym (language, translation){
+        socket.on('chat message', function(nickname, msg){
           $.ajax({
-                type: 'GET',
-                url: "https://restcountries.eu/rest/v1/alpha/" + language,
-                success: function(data) {
-                  $('#messages').append($('<li>').text(translation + " Translated from: " + data.demonym));
-                }
-          });
-        }
+            type: 'GET',
+            url: "https://www.googleapis.com/language/translate/v2?q=" + msg + "&target=en&key=AIzaSyDcE9tSELEYm1Mmqj7yCh6lNImSJuGRe7I",
+            success: function(data) {
 
-      });
-    </script>
+                    var language = data.data.translations[0].detectedSourceLanguage;
+                    var translation = data.data.translations[0].translatedText;
+
+                      if(language == "en"){
+                        $('#messages').append($('<li>').text( nickname + ': ' + translation));
+                      }else{
+                        Demonym(language, translation);
+                      }
+            }
+          });
+
+          function Demonym (language, translation){
+            $.ajax({
+                  type: 'GET',
+                  url: "https://restcountries.eu/rest/v1/alpha/" + language,
+                  success: function(data) {
+                    $('#messages').append($('<li>').text( nickname + ': ' + translation + " Translated from: " + data.demonym));
+                  }
+            });
+          }
+
+        });
+      </script>
+    </div>
   </body>
 </html>
