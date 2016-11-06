@@ -30,13 +30,16 @@
       <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
       <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
       <script>
-
-        var socket = io();
         var nickname = '';
+        var socket = io();
+
+        $('#n').select();
+
         $('#welcome form').submit(function(e){
             nickname = $('#n').val();
             socket.emit('send-nickname', nickname);
             $('#chat').show();
+            $('#m').select();
             $('#welcome').hide();
             return false;
         });
