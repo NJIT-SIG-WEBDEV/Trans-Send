@@ -9,6 +9,16 @@
           padding:0;
         }
 
+        #welcome {
+          display: none;
+        }
+
+        #title {
+          background: rgb(242, 242, 240);
+          height:50%;
+          width:50%;
+        }
+
         body {
           background: rgb(242, 242, 240);
           font:13px Helvetica, Arial;
@@ -76,15 +86,15 @@
   </head>
   <body>
     <div id="welcome">
-      <h1>Hello!</h1>
+      <img id="title" src="https://files.slack.com/files-pri/T2Y3U11Q8-F2ZKLJCEA/transend_logo_trans.png">
       <form action="">
-        <input id="n" autocomplete="off" placeholder="Enter your desired nickname"/><button>Select</button>
+        <input maxlength="150" id="n" autocomplete="off" placeholder="Enter your desired nickname"/><button>Select</button>
       </form>
     </div>
     <div id="chat">
       <ul id="messages"></ul>
       <form action="">
-        <input id="m" autocomplete="off" /><button>Send</button>
+        <input maxlength="150" id="m" autocomplete="off" /><button>Send</button>
       </form>
         </div>
       <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
@@ -94,6 +104,8 @@
         var yournick = '';
         var socket = io();
 
+        $('#welcome').fadeIn(2000);
+
         $('#n').select();
 
         $('#welcome form').submit(function(e){
@@ -102,7 +114,7 @@
             socket.emit('send-nickname', nickname);
             $('#chat').show();
             $('#m').select();
-            $('#welcome').hide();
+            $('#welcome').hide(1000);
             return false;
         });
         $('#chat form').submit(function(){
