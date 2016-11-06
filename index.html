@@ -3,15 +3,75 @@
   <head>
     <title>Socket.IO chat</title>
     <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #chat { display: none; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
+
+      * {
+          margin:0;
+          padding:0;
+        }
+
+        body {
+          background: rgb(242, 242, 240);
+          font:13px Helvetica, Arial;
+        }
+
+        form {
+          background:#000;
+          position:fixed;
+          bottom:0;
+          width:100%;
+          padding:3px;
+        }
+
+        form input {
+          border:0;
+          width:87%;
+          margin-right:.5%;
+          padding:10px;
+        }
+
+        form button {
+          width:9%;
+          background:#82e0ff;
+          border:none;
+          padding:10px;
+        }
+
+        #chat {
+          display:none;
+        }
+
+        #messages {
+          list-style-type:none;
+          margin:0;
+          padding:0;
+        }
+
+        #messages li {
+          padding:5px 10px;
+          margin-bottom: 10px;
+          background: rgb(255, 255, 255);
+        }
+
+        /*#messages li:nth-child(odd) {
+          background:rgb(37, 175, 178);
+        }*/
+
+        li.me {
+
+        }
+
+        li.others {
+          text-align: right;
+        }
+
+        p.name {
+
+        }
+
+        div.chatText {
+          /*padding: 15px 20px;*/
+        }
+
     </style>
   </head>
   <body>
@@ -23,13 +83,14 @@
       <form action="">
         <input id="m" autocomplete="off" /><button>Send</button>
       </form>
-
+        </div>
       <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
       <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
       <script>
 
         var socket = io();
         var nickname = prompt('What nickname do you want to use?');
+        var yournick = nickname;
         socket.emit('send-nickname', nickname);
         $('#chat').show();
         $('#welcome').hide();
@@ -39,6 +100,8 @@
           return false;
         });
         socket.on('chat message', function(nickname, msg){
+          if (msg == "") return;
+
           $.ajax({
             type: 'GET',
             url: "https://www.googleapis.com/language/translate/v2?q=" + msg + "&target=en&key=AIzaSyDcE9tSELEYm1Mmqj7yCh6lNImSJuGRe7I",
@@ -48,7 +111,11 @@
                     var translation = data.data.translations[0].translatedText;
 
                       if(language == "en"){
-                        $('#messages').append($('<li>').text( nickname + ': ' + translation));
+                          if(yournick === nickname){
+                              $('#messages').append($('<li class="me">').html( "<strong> Me: </strong>" + translation));
+                          }else{
+                              $('#messages').append($('<li class="others">').html( "<div class=\"right\"> <strong>" + nickname + "</strong>: " + translation + "</div>"));
+                          }
                       }else{
                         Demonym(language, translation);
                       }
@@ -60,13 +127,16 @@
                   type: 'GET',
                   url: "https://restcountries.eu/rest/v1/alpha/" + language,
                   success: function(data) {
-                    $('#messages').append($('<li>').text( nickname + ': ' + translation + " Translated from: " + data.demonym));
+                    if(yournick === nickname){
+                        $('#messages').append($('<li class="me">').html( "<strong> Me: </strong>" + translation + "      Translated from: " + data.demonym));
+                    }else{
+                        $('#messages').append($('<li class="others">').html( "<strong>" + nickname + "</strong>" + ': ' + translation + "      Translated from: " + data.demonym));
+                    }
                   }
             });
           }
 
         });
       </script>
-    </div>
   </body>
 </html>
