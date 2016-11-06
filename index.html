@@ -15,6 +15,11 @@
   </head>
   <body>
 
+    <select>
+      <option id='english' value="us">English</option>
+      <option id='british_english'value="fr">French</option>
+      <option id='german' value="de">German</option>
+    </select>
 
     <ul id="messages"></ul>
     <form action="">
@@ -35,9 +40,11 @@
       });
       socket.on('chat message', function(msg){
 
+        var preferredLang = "en";
+
         $.ajax({
           type: 'GET',
-          url: "https://www.googleapis.com/language/translate/v2?q=" + msg + "&target=en&key=AIzaSyDcE9tSELEYm1Mmqj7yCh6lNImSJuGRe7I",
+          url: "https://www.googleapis.com/language/translate/v2?q=" + msg + "&target=" + preferredLang + "&key=AIzaSyDcE9tSELEYm1Mmqj7yCh6lNImSJuGRe7I",
           success: function(data) {
 
                   var language = data.data.translations[0].detectedSourceLanguage;
