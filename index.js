@@ -16,10 +16,10 @@ io.on('connection', function(socket){
     socket.nickname = nickname;
   });
 
-  socket.on('chat message', function(author, msg){
-      console.log(author);
+  socket.on('chat message', function(nickname, msg){
+      console.log(nickname);
     console.log('message: ' + msg);
-    io.emit('chat message', author + ': ' + msg);
+    io.emit('chat message', nickname, msg);
     io.emit('some event', { for: 'everyone' });
   socket.broadcast.emit('hi');
   });
