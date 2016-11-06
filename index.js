@@ -20,11 +20,9 @@ io.on('connection', function(socket){
     console.log(nickname);
     console.log('message: ' + msg);
     io.emit('chat message', nickname, msg);
-    io.emit('some event', { for: 'everyone' });
-  socket.broadcast.emit('hi');
+    socket.broadcast.emit('hi');
   });
 });
-
 
 
 http.listen(3000, function(){

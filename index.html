@@ -27,6 +27,7 @@
       <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
       <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
       <script>
+
         var socket = io();
         var nickname = prompt('What nickname do you want to use?');
         socket.emit('send-nickname', nickname);
@@ -38,7 +39,32 @@
           return false;
         });
         socket.on('chat message', function(nickname, msg){
-          $('#messages').append($('<li>').text( nickname + ': ' + msg ));
+          $.ajax({
+            type: 'GET',
+            url: "https://www.googleapis.com/language/translate/v2?q=" + msg + "&target=en&key=AIzaSyDcE9tSELEYm1Mmqj7yCh6lNImSJuGRe7I",
+            success: function(data) {
+
+                    var language = data.data.translations[0].detectedSourceLanguage;
+                    var translation = data.data.translations[0].translatedText;
+
+                      if(language == "en"){
+                        $('#messages').append($('<li>').text( nickname + ': ' + translation));
+                      }else{
+                        Demonym(language, translation);
+                      }
+            }
+          });
+
+          function Demonym (language, translation){
+            $.ajax({
+                  type: 'GET',
+                  url: "https://restcountries.eu/rest/v1/alpha/" + language,
+                  success: function(data) {
+                    $('#messages').append($('<li>').text( nickname + ': ' + translation + " Translated from: " + data.demonym));
+                  }
+            });
+          }
+
         });
       </script>
     </div>
