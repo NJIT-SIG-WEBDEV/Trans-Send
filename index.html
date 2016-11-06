@@ -88,13 +88,13 @@
     <div id="welcome">
       <img id="title" src="https://files.slack.com/files-pri/T2Y3U11Q8-F2ZKLJCEA/transend_logo_trans.png">
       <form action="">
-        <input id="n" autocomplete="off" placeholder="Enter your desired nickname"/><button>Select</button>
+        <input maxlength="150" id="n" autocomplete="off" placeholder="Enter your desired nickname"/><button>Select</button>
       </form>
     </div>
     <div id="chat">
       <ul id="messages"></ul>
       <form action="">
-        <input id="m" autocomplete="off" /><button>Send</button>
+        <input maxlength="150" id="m" autocomplete="off" /><button>Send</button>
       </form>
         </div>
       <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
