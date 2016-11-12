@@ -5,7 +5,7 @@
     <title>TransSend</title>
     <script type="text/javascript">
     function scrollToBottom() {
-      $('html, body').animate({scrollTop:$(document).height()}, 'slow');
+      $('body').animate({ scrollTop: $('body').prop('scrollHeight')}, 1000);
     }
     function scrollToTop() {
       $('html, body').animate({scrollTop:0}, 'slow');
