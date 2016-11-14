@@ -5,9 +5,10 @@
     <title>TransSend</title>
     <script type="text/javascript">
     function scrollToBottom() {
-    $('html, body').animate({scrollTop:$(document).height()}, 'slow');
+      $('body').animate({ scrollTop: $('body').prop('scrollHeight')}, 1000);
+    }
     function scrollToTop() {
-    $('html, body').animate({scrollTop:0}, 'slow');
+      $('html, body').animate({scrollTop:0}, 'slow');
     }
     </script>
     <style>
@@ -17,19 +18,21 @@
           padding:0;
         }
 
+        body {
+          background: rgb(242, 242, 240);
+          font:13px Helvetica, Arial;
+        }
+
         #welcome {
           display: none;
         }
 
         #title {
+          display:block;
+          margin:auto;
           background: rgb(242, 242, 240);
           height:50%;
           width:50%;
-        }
-
-        body {
-          background: rgb(242, 242, 240);
-          font:13px Helvetica, Arial;
         }
 
         #chat form {
@@ -48,6 +51,7 @@
           padding:10px;
           border-style: groove;
         }
+
         .button {
         background-color: #4CAF50; /* Green */
         border: none;
@@ -180,6 +184,8 @@
                       }else{
                         Demonym(language, translation);
                       }
+
+                      scrollToBottom();
             }
           });
 
