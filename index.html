@@ -177,9 +177,9 @@
 
                       if(language == "en"){
                           if(yournick === nickname){
-                              $('#messages').append($('<li class="me">').html( "<strong> Me: </strong>" + translation));
+                              $('#messages').append($('<li class="me">').text( "Me:" + translation));
                           }else{
-                              $('#messages').append($('<li class="others">').html( "<div class=\"right\"> <strong>" + nickname + "</strong>: " + translation + "</div>"));
+                              $('#messages').append($('<li class="others">').text( "<div class=\"right\"> <strong>" + nickname + "</strong>: " + translation + "</div>"));
                           }
                       }else{
                         Demonym(language, translation);
@@ -195,9 +195,9 @@
                   url: "https://restcountries.eu/rest/v1/alpha/" + language,
                   success: function(data) {
                     if(yournick === nickname){
-                        $('#messages').append($('<li class="me">').html( "<strong> Me: </strong>" + translation + "      Translated from: " + data.demonym));
+                        $('#messages').append($('<li class="me">').text( "Me: " + translation + " Translated from: " + data.demonym));
                     }else{
-                        $('#messages').append($('<li class="others">').html( "<strong>" + nickname + "</strong>" + ': ' + translation + "      Translated from: " + data.demonym));
+                        $('#messages').append($('<li class="others">').text( nickname + " :" + translation + " Translated from: " + data.demonym));
                     }
                   }
             });
